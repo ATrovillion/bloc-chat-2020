@@ -45,7 +45,7 @@ class RoomList extends Component {
                     <fieldset>
                     <h2>Enter the name of your new room</h2>
                     <input type="text" value={ this.state.newRoomDescription } onChange={ (e) => this.handleChange(e) } />
-                    <input type="submit" onSubmit={(e) => this.handleSubmit(e)} />
+                    <input type="submit" onSubmit={ (e) => this.handleSubmit(e) } />
                     </fieldset>
                 </form>
                 
