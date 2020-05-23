@@ -29,22 +29,26 @@ class MessageList extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const messageToAdd = {
-            content: this.state.newMessage.content,
-            roomId: this.props.activeRoom.key
-        }
-        this.messagesRef.push({
-            content: messageToAdd.content,
-            sentAt: this.props.firebase.database.ServerValue.TIMESTAMP,
-            roomId: messageToAdd.roomId
-        })
-        // This section resets the newMessage part of state for form cleanup
-        this.setState({
-            newMessage: {
-                content: '',
-                roomId: ''
+        if (!e.target.value) {
+            return;
+        } else {
+            const messageToAdd = {
+                content: this.state.newMessage.content,
+                roomId: this.props.activeRoom.key
             }
-        })
+            this.messagesRef.push({
+                content: messageToAdd.content,
+                sentAt: this.props.firebase.database.ServerValue.TIMESTAMP,
+                roomId: messageToAdd.roomId
+            })
+            // This section resets the newMessage part of state for form cleanup
+            this.setState({
+                newMessage: {
+                    content: '',
+                    roomId: ''
+                }
+            })
+        }
     }
 
     handleChange(e) {
