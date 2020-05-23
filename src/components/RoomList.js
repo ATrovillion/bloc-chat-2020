@@ -37,10 +37,10 @@ class RoomList extends Component {
     render() {
         return (
             <div>
-                <div>{this.state.rooms.map((room) => 
-                    <p key={room.key}>{room.name}</p>
+                <nav>{this.state.rooms.map((room) =>
+                    <p key={room.key} onClick={() => this.props.activeRoomSet(room)}>{room.name}</p>
                 )}
-                </div>
+                </nav>
                 <form onSubmit={(e) => this.handleSubmit(e) }>
                     <fieldset>
                     <h2>Enter the name of your new room</h2>
