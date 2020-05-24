@@ -10,7 +10,7 @@ class MessageList extends Component {
                 content: '',
                 roomId: '',
                 sentAt: '',
-                username: ''
+                user: ''
             }
         }
 
@@ -74,7 +74,7 @@ class MessageList extends Component {
                     </ul>
                 </div> */}
                 <div>
-                    <form onSubmit={(e) => this.handleSubmit(e) }>
+                    <form onSubmit={(e) => this.handleSubmit(e)} >
                         <fieldset>
                             <h4>Enter the text of the new message</h4>
                             <input type="text" size="100" value={ this.state.newMessage.content } onChange={ (e) => this.handleChange(e) } />
