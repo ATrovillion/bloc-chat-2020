@@ -6,11 +6,9 @@ class MessageList extends Component {
         super(props);
         this.state = {
             messages: [],
+            user: this.props.user,
             newMessage: {
-                content: '',
-                roomId: '',
-                sentAt: '',
-                user: ''
+                content: ''
             }
         }
 
@@ -29,23 +27,25 @@ class MessageList extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        if (!e.target.value) {
+        console.log("handleSubmit called!")
+        if (this.state.newMessage.content === '') {
             return;
         } else {
             const messageToAdd = {
                 content: this.state.newMessage.content,
                 roomId: this.props.activeRoom.key
+
             }
             this.messagesRef.push({
                 content: messageToAdd.content,
                 sentAt: this.props.firebase.database.ServerValue.TIMESTAMP,
-                roomId: messageToAdd.roomId
+                roomId: messageToAdd.roomId,
+                user: this.props.user.displayName
             })
             // This section resets the newMessage part of state for form cleanup
             this.setState({
                 newMessage: {
-                    content: '',
-                    roomId: ''
+                    content: ''
                 }
             })
         }
@@ -66,30 +66,29 @@ class MessageList extends Component {
         } else {
         return (
             <div>
-                {/* The following div renders a list of all messages, regardless of roomId */}
-                {/* <div>
-                    <h2>List of All Messages</h2>
-                    <ul>{this.state.messages.map((message) =>
-                        <li key={message.key}>{message.content}</li>)}
-                    </ul>
-                </div> */}
                 <div>
                     <form onSubmit={(e) => this.handleSubmit(e)} >
-                        <fieldset>
-                            <h4>Enter the text of the new message</h4>
-                            <input type="text" size="100" value={ this.state.newMessage.content } onChange={ (e) => this.handleChange(e) } />
-                            <input type="submit" onSubmit={ (e) => this.handleSubmit(e) } />
-                        </fieldset>
+                            {this.props.user
+                            ? <fieldset>
+                                <h4>Enter the text of the new message</h4>
+                                <input type="text" size="100" value={ this.state.newMessage.content } onChange={ (e) => this.handleChange(e) } />
+                                <input type="submit" onSubmit={ (e) => this.handleSubmit(e) } />
+                            </fieldset>
+                            
+                            : <fieldset>
+                                <h2>Please log in to create new messages</h2>
+                            </fieldset>
+                            }
                     </form>
                 </div>
                 {/*This section will replace the all-message list by listing ony messages associated with the active room */}
                 <div>
-                    <h2>List of Messages for the Active Room</h2>
-                    <h1>The active room is {this.props.activeRoom.name}, and the room's index is {this.props.activeRoom.key}</h1>
+                    <h2>List of Messages for: {this.props.activeRoom.name}</h2>
 
                     <ul>{this.state.messages
                             .filter(message => message.roomId === this.props.activeRoom.key)
-                            .map(message => <li key={message.key}>{message.content}</li>)}
+                            .map(message => <li key={message.key}>{message.content}</li>)
+                        }
                     </ul>
                 </div>
             </div>
